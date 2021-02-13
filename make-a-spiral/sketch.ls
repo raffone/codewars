@@ -15,7 +15,7 @@ spiralize = (size) ->
     *  0 0 0 -2
 
 
-  matrix = [[0] * (size + 2)] * (size + 2)
+  matrix = [[0] * (size + 2) for til size + 2]
 
   activateCurrentCell = !->
     matrix[currPos.0][currPos.1] = 1
