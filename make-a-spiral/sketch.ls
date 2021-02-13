@@ -2,46 +2,38 @@ spiralize = (size) ->
   currDir = 1
   currPos = [1 1]
 
-  mov = [
-    [-1  0]
-    [ 0  1]
-    [ 1  0]
-    [ 0 -1]
-  ]
+  mov =
+    * -1  0
+    *  0  1
+    *  1  0
+    *  0 -1
 
-  look = [
-    [-2 0 0  0]
-    [ 0 2 0  0]
-    [ 0 0 2  0]
-    [ 0 0 0 -2]
-  ]
+  look =
+    * -2 0 0  0
+    *  0 2 0  0
+    *  0 0 2  0
+    *  0 0 0 -2
 
 
-  matrix = for til size + 2
-    for til size + 2
-      0
+  matrix = [[0] * (size + 2) for til size + 2]
 
   activateCurrentCell = !->
-    matrix[currPos[0]][currPos[1]] = 1
+    matrix[currPos.0][currPos.1] = 1
 
   nextPosition = !->
-    currPos[1] += mov[currDir][1]
-    currPos[0] += mov[currDir][0]
+    currPos{0 1} += mov[currDir]
 
   nextDirection = !->
-    if ++currDir is 4 then currDir := 0
+    currDir := 0 if ++currDir is 4
 
 
-  lookAhead = !->
-    if matrix[currPos[0] + look[currDir][0]][currPos[1]] is 0 and
-       matrix[currPos[0] + look[currDir][2]][currPos[1]] is 0 and
-       matrix[currPos[0]][currPos[1] + look[currDir][1]] is 0 and
-       matrix[currPos[0]][currPos[1] + look[currDir][3]] is 0
-      return true
-    else
-      return false
+  lookAhead = ->
+    matrix[currPos.0 + look[currDir]0][currPos.1] is 0 and
+    matrix[currPos.0 + look[currDir]2][currPos.1] is 0 and
+    matrix[currPos.0][currPos.1 + look[currDir]1] is 0 and
+    matrix[currPos.0][currPos.1 + look[currDir]3] is 0
 
-  while true
+  loop
     for i til size - 1
 
       if lookAhead!
@@ -59,19 +51,24 @@ spiralize = (size) ->
   matrix.pop!
   matrix.shift!
 
-  for row in matrix
-    row.pop!
-    row.shift!
+  for matrix
+    ..pop!
+    ..shift!
 
-  return matrix
+  matrix
 
 console.log spiralize 5
 
-#drawSpiral = (arr) ->
-  #arr.join '\n'
+# drawSpiral = (arr) ->
+#   arr * \\n
 
 
-#console.log drawSpiral createSpiral 8
+# console.log drawSpiral createSpiral 8
 
 
-#console.log showGrid [[1,1,1,1,1],[0,0,0,0,1],[1,1,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]
+# console.log showGrid []=
+#   * 1 1 1 1 1
+#   * 0 0 0 0 1
+#   * 1 1 1 0 1
+#   * 1 0 0 0 1
+#   * 1 1 1 1 1
